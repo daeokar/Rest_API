@@ -1,0 +1,3 @@
+single_stud/<int:pk>/ ------grt single student
+
+all_stud/   ------get al studens
