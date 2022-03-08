@@ -1,3 +1,14 @@
 single_stud/<int:pk>/ ------grt single student
 
 all_stud/   ------get al studens
+
+creat_data/ ----- creating data on server single_stud
+
+
+
+validations type
+
+1. field level 
+2. object level validation
+3. validations
+

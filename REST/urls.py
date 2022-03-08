@@ -23,5 +23,13 @@ urlpatterns = [
     path('all_stud/', all_stud),
     path('create_data/', create_data),
 
+    #----single api for all method
+
+    # path('student_api/', student_api),
+
+    #---class base view
+
+    path('stud_class_api/', StudentAPI.as_view()),
+
 
 ]
