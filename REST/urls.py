@@ -38,10 +38,16 @@ urlpatterns = [
     # path('studentAPIViews/<int:pk>/', StudentAPIViews.as_view()),
 
     #---GenericAPIView  url ---
-    path('student_List/', StudentList.as_view()),
-    path('student_Create/', StudentCreate.as_view()),
-    path('student_Retrive/<int:pk>/', StudentRetrive.as_view()),
-    path('student_Update/<int:pk>/', StudentUpdate.as_view()),
-    path('student_Destroy/<int:pk>/', StudentDestroy.as_view()),
+    # path('student_List/', StudentList.as_view()),
+    # path('student_Create/', StudentCreate.as_view()),
+    # path('student_Retrive/<int:pk>/', StudentRetrive.as_view()),
+    # path('student_Update/<int:pk>/', StudentUpdate.as_view()),
+    # path('student_Destroy/<int:pk>/', StudentDestroy.as_view()),
+
+
+    #----common mixin
+    path('student_list_create/', StudListCreate.as_view()),
+    path('student_retrive_update_destroy/<int:pk>/', StudRetriveUpdateDestroy.as_view()),
+
 
 ]

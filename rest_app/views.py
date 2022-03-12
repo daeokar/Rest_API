@@ -422,18 +422,18 @@ from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateMode
 from rest_framework.generics import GenericAPIView
 
 class StudentList(GenericAPIView, ListModelMixin):
-    queryset = Student.objects.all()                                 #----GenericAPIView
-    serializer_class = StudentSerializer                           #----GenericAPIView
+    queryset = Student.objects.all()                                  #----GenericAPIView
+    serializer_class = StudentSerializer                              #----GenericAPIView
 
     def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+        return self.list(request, *args, **kwargs)                    #-----ListModelMixin
 
 class StudentCreate(GenericAPIView, CreateModelMixin):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
     def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+        return self.create(request, *args, **kwargs)                  #----CreateModelMixin
 
 #------ Required id -----
 
@@ -442,14 +442,14 @@ class StudentRetrive(GenericAPIView, RetrieveModelMixin):
     serializer_class = StudentSerializer
 
     def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+        return self.retrieve(request, *args, **kwargs)                 #----RetrieveModelMixin
 
 class StudentUpdate(GenericAPIView, UpdateModelMixin):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
     def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
+        return self.update(request, *args, **kwargs)                    #-----UpdateModelMixin
 
     
 
@@ -458,10 +458,39 @@ class StudentDestroy(GenericAPIView, DestroyModelMixin):
     serializer_class = StudentSerializer
 
     def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+        return self.destroy(request, *args, **kwargs)                    #------DestroyModelMixin
 
     
 ##################################################################################################    
 
 
+#-----Common mixing-----
+
+class StudListCreate(GenericAPIView, ListModelMixin, CreateModelMixin):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+    def get(self, request, *args, **kwargs):                               #----to get all data ------get
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):                              #----to create data   -----post
+        return self.create(request, *args, **kwargs)
+
+ 
+
+class StudRetriveUpdateDestroy(GenericAPIView, UpdateModelMixin, RetrieveModelMixin, DestroyModelMixin):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+    def get(self, request, *args, **kwargs):                                #---to get the single data  -----get
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):                                #----to update the data ----- put, patch
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):                             #----to delete data  -------delete
+        return self.destroy(request, *args, **kwargs)
+
+
+################################################################################################
 
