@@ -5,6 +5,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 
 
 # Create your views here.
@@ -228,21 +229,129 @@ class StudentAPI(View):
             stud = Student.objects.get(id=sid)
             stud.delete()
             return JsonResponse({"msg" : "data delete successfully"})
+
+
+#-########################################################################
     
 
-@api_view(["GET", "POST", "PUT", "DELETE"])
+from rest_framework.response import Response
+
+"""
+@api_view(["GET", "POST", "PUT", "DELETE", "PATCH"])   #----by default GET
 def student_api(request):
     if request.method == "GET":
-        pass
+        sid = request.data.get("id")
+        if sid:
+            stud = Student.objects.get(id=sid)
+            ser = StudentSerializer(stud)
+            return Response(ser.data)
+        else:
+            studs = Student.objects.all()
+            ser = StudentSerializer(studs, many=True)
+            return Response(ser.data)
 
     if request.method == "POST":
-        pass
+        data1 = request.data
+        ser = StudentSerializer(data=data1)
+        if ser.is_valid():
+            ser.save()
+            return Response({"msg" : "Data created successfully"})
+        else:
+            return Response(ser.errors)
 
     if request.method == "PUT":
-        pass
+        sid = request.data.get("id")
+        stud = Student.objects.get(id=sid)
+        ser = StudentSerializer(instance=stud, data=request.data)
+        if ser.is_valid():
+            ser.save()
+            return Response({"msg" : "Data update for {}".format(request.data.get("id"))})
+        else:
+            return Response(ser.errors)
+
+    if request.method == "PATCH":
+        sid = request.data.get("id")
+        stud = Student.objects.get(id=sid)
+        ser = StudentSerializer(instance=stud, data=request.data, partial=True)
+        if ser.is_valid():
+            ser.save()
+            return Response({"msg" : "Data update for {}".format(request.data.get("id"))})
+        else:
+            return Response(ser.errors)
 
     if request.method == "DELETE":
-        pass
+        sid = request.data.get("id")
+        stud = Student.objects.get(id=sid)
+        stud.delete()
+        return Response({"msg" : {"data delete successfully...!"}})
+
+"""
+#-------#########################################################################
+
+#---Browsable API---
+
+from rest_framework import status
+
+@api_view(["GET", "POST", "PUT", "DELETE", "PATCH"])   #----by default GET
+def student_api(request, pk):
+    if request.method == "GET":
+        sid = request.data.get("id")
+        if sid:
+            stud = Student.objects.get(id=sid)
+            ser = StudentSerializer(stud)
+            return Response(ser.data) 
+        else:
+            studs = Student.objects.all()
+            ser = StudentSerializer(studs, many=True)
+            return Response(ser.data)
+
+    if request.method == "POST":
+        data1 = request.data
+        ser = StudentSerializer(data=data1)
+        if ser.is_valid():
+            ser.save()
+            return Response({"msg" : "Data created successfully", "data" : request.data}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(ser.errors)
+
+    if request.method == "PUT":
+        sid = request.data.get("id")
+        stud = Student.objects.get(id=sid)
+        ser = StudentSerializer(instance=stud, data=request.data)
+        if ser.is_valid():
+            ser.save()
+            return Response({"msg" : "complete Data update for {}".format(pk)})
+        else:
+            return Response(ser.errors)
+
+    if request.method == "PATCH":
+        sid = request.data.get("id")
+        stud = Student.objects.get(id=sid)
+        ser = StudentSerializer(instance=stud, data=request.data, partial=True)
+        if ser.is_valid():
+            ser.save()
+            return Response({"msg" : "Partial Data update for {}".format(pk)})
+        else:
+            return Response(ser.errors)
+
+    if request.method == "DELETE":
+        sid = request.data.get("id")
+        stud = Student.objects.get(id=sid)
+        stud.delete()
+        return Response({"msg" : {"data delete successfully...!"}})
+
+
+#################################################################################################
+# --apiviews
+
+#-----APIView class -----is sub class of View
+
+
+
+
+
+
+
 
 
 

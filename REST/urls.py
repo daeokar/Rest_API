@@ -31,5 +31,9 @@ urlpatterns = [
 
     path('stud_class_api/', StudentAPI.as_view()),
 
+    #---api url
+
+    path('student_api/', student_api),
+    path('student_api/<int:pk>/', student_api),
 
 ]

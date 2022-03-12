@@ -1,0 +1,77 @@
+1. get-stud/<int:pk>/ -- get single student
+2. get-all-stud/ -- get all student
+3. create-data/  --- creating data on server side
+
+
+
+validations type - 
+1. filed level
+2. object level validation
+3. validators
+
+### Authentication / Authorizations
+
+-- currently, API  - permission , Authentication
+-- Authentication/Authorizations
+    - user -- create -- create, get
+    - is_superuser, is_staff, is_active
+    - Superuser-1 1 1-, SubAdmin--0 1 1, Normal User---  0 0 1
+
+- data show -- user which is authinticated
+- creator -- object level-
+- read data -- in case of un authinticated
+
+# Authentication:- 
+
+- credentials  - username/password --------------- token
+- Authentication always runs before view
+- drf provides diff types of Authentication:-
+    - Basic
+    - Session
+    - Token
+    - RemoteUser
+    - Custom
+
+- Basic
+    - credentials
+    - devp purpose,no use in  production 
+    - 401- error - Unauthorized  -- in case of unauthenticated
+    - 
+
+
+# Permission
+    - permission classes --
+        AllowAny
+        IsAuthenticated
+        IsAdminUser
+        IsAuthenticatedOrReadOnly
+        DjangoModelPermissions
+        DjangoModelPermissionsOrAnonReadOnly
+        DjangoObjectPermissions
+        Custom permissions
+        
+
+# Token  - 
+
+    - first time username 
+    - token is generated respective to user
+    - multiple ways to generate token:
+        - admin UI
+        - python manage.py drf_create_token username
+        - api endpoint  - function   - need to pass username, password
+        - using signals  --- 
+            - traffic signal   -- green  -- move ahead
+            - Django Signal  -- User create -- automatically Token generated for that specific user
+
+            - 
+    - 
+- postman --
+    - Headers
+    - Authorization Token 58eeb90a004a63d11b1ff319d10ad6325cebc7f6
+
+- JWT -- expiry -- secured API  -- 
+JSON web based Token
+
+The access token is usually short-lived (expires in 5 min or so, can be customized though).
+
+The refresh token lives a little bit longer (expires in 24 hours, also customizable). It is comparable to an authentication session. After it expires, you need a full login with username + password again.

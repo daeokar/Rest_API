@@ -65,7 +65,7 @@ class StudentSerializer(serializers.Serializer):
 
 # --ModelSerializer
 class StudentSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(max_length=100, validators=[name_startswith_A, name_len])
+    # name = serializers.CharField(max_length=100, validators=[name_startswith_A, name_len])
     class Meta:
         model = Student
         # fields = ["id", "name", "age", "city", "marks"]
