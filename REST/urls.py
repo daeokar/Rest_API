@@ -24,16 +24,18 @@ urlpatterns = [
     path('create_data/', create_data),
 
     #----single api for all method
-
     # path('student_api/', student_api),
 
     #---class base view
-
-    path('stud_class_api/', StudentAPI.as_view()),
+    # path('stud_class_api/', StudentAPI.as_view()),
 
     #---api url
+    # path('student_api/', student_api),
+    # path('student_api/<int:pk>/', student_api),
 
-    path('student_api/', student_api),
-    path('student_api/<int:pk>/', student_api),
+    #---APIViews url
+    path('studentAPIViews/', StudentAPIViews.as_view()),
+    path('studentAPIViews/<int:pk>/', StudentAPIViews.as_view()),
+
 
 ]

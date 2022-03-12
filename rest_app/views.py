@@ -1,12 +1,12 @@
-from django.shortcuts import render
-from rest_app.models import *
-from rest_app.serilizers import *
-from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
+from rest_framework.parsers import JSONParser
+from rest_framework.renderers import JSONRenderer
 
+from rest_app.models import *
+from rest_app.serilizers import *
 
 # Create your views here.
 
@@ -160,8 +160,9 @@ def student_api(request):
 
 #--class base views
 
-from django.views import View
 from django.utils.decorators import method_decorator
+from django.views import View
+
 
 @method_decorator(csrf_exempt, name="dispatch")
 class StudentAPI(View):
@@ -292,6 +293,7 @@ def student_api(request):
 
 from rest_framework import status
 
+
 @api_view(["GET", "POST", "PUT", "DELETE", "PATCH"])   #----by default GET
 def student_api(request, pk):
     if request.method == "GET":
@@ -346,7 +348,58 @@ def student_api(request, pk):
 
 #-----APIView class -----is sub class of View
 
+from rest_framework.views import APIView
 
+
+class StudentAPIViews(APIView):
+    def get(self, request, pk=None, format=None ):
+        sid = pk
+        if sid:
+            stud = Student.objects.get(id=sid)
+            ser = StudentSerializer(stud)
+            return Response(ser.data)
+        
+        studs = Student.objects.all()
+        ser = StudentSerializer(studs, many=True)
+        return Response(ser.data)
+
+    def post(self, request, format=None):
+        data = request.data                                                #python dict ---Unserialize data
+        ser = StudentSerializer(data=data)
+        if ser.is_valid():
+            ser.save()
+            return Response({"msg" : "Data Created Successfully....!", "data" : ser.data}, status=status.HTTP_201_CREATED)
+        return Response(ser.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk=None, format=None):
+        sid = pk
+        if sid:
+            stud = Student.objects.get(id=sid)
+            ser = StudentSerializer(instance=stud, data=request.data)
+            if ser.is_valid():
+                ser.save()
+                return Response({"msg" : "complete data updated....!", "data" : ser.data}, status=status.HTTP_201_CREATED)
+            return Response(ser.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk=None, format=None):
+        sid = pk
+        if sid:
+            stud = Student.objects.get(id=sid)
+            ser = StudentSerializer(instance=stud, data=request.data, partial=True)
+            if ser.is_valid():
+                ser.save()
+                return Response({"msg" : "partialy data updated....!", "data" : ser.data}, status=status.HTTP_201_CREATED)
+        return Response(ser.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def delete(self, request, pk=None, format=None):
+        sid = pk
+        if sid:
+            stud = Student.objects.get(id=sid)
+            stud.delete()
+            return Response({"msg" : "Data deleted  Successfully....!"})
+
+#################################################################################################################
 
 
 
