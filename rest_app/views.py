@@ -402,9 +402,66 @@ class StudentAPIViews(APIView):
 #################################################################################################################
 
 
+#---------------------------By using generic api views----------- Mixins----------
 
+#--GenericAPIView   -- subclass of APIView
 
+#--- already defined common beheviours  -- 
 
+# - queryset -- Student.objects.all()
+# - serializer_class -- StudentSerializer
+
+# Mixins:-
+# ListModelMixin -- all data
+# RetrieveModelMixin  - single data
+# CreateModelMixin  -- for post request, 
+# UpdateModelMixin -- update
+# DestroyModelMixin  -- delete
+
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, CreateModelMixin
+from rest_framework.generics import GenericAPIView
+
+class StudentList(GenericAPIView, ListModelMixin):
+    queryset = Student.objects.all()                                 #----GenericAPIView
+    serializer_class = StudentSerializer                           #----GenericAPIView
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+class StudentCreate(GenericAPIView, CreateModelMixin):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+#------ Required id -----
+
+class StudentRetrive(GenericAPIView, RetrieveModelMixin):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+class StudentUpdate(GenericAPIView, UpdateModelMixin):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    
+
+class StudentDestroy(GenericAPIView, DestroyModelMixin):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+    
+##################################################################################################    
 
 
 

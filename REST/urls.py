@@ -34,8 +34,14 @@ urlpatterns = [
     # path('student_api/<int:pk>/', student_api),
 
     #---APIViews url
-    path('studentAPIViews/', StudentAPIViews.as_view()),
-    path('studentAPIViews/<int:pk>/', StudentAPIViews.as_view()),
+    # path('studentAPIViews/', StudentAPIViews.as_view()),
+    # path('studentAPIViews/<int:pk>/', StudentAPIViews.as_view()),
 
+    #---GenericAPIView  url ---
+    path('student_List/', StudentList.as_view()),
+    path('student_Create/', StudentCreate.as_view()),
+    path('student_Retrive/<int:pk>/', StudentRetrive.as_view()),
+    path('student_Update/<int:pk>/', StudentUpdate.as_view()),
+    path('student_Destroy/<int:pk>/', StudentDestroy.as_view()),
 
 ]
