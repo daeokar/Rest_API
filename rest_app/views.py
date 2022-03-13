@@ -494,6 +494,8 @@ class StudRetriveUpdateDestroy(GenericAPIView, UpdateModelMixin, RetrieveModelMi
 
 ################################################################################################
 
+#----Concreat APIViews---
+
 from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView
 
 
@@ -519,6 +521,23 @@ class StudentDestroyC(DestroyAPIView):
 
 
 #####################################################################################################
+
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+
+class StudListCreateView(ListCreateAPIView):                                               #---combine the two views -- list, create in single class 
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+class StudRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):                          #---combine the three views --retrive , update, destroy, in single class 
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+
+#######################################################################################################
+
+
+
+
 
 
 
