@@ -494,3 +494,33 @@ class StudRetriveUpdateDestroy(GenericAPIView, UpdateModelMixin, RetrieveModelMi
 
 ################################################################################################
 
+from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView
+
+
+class StudentListC(ListAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+class StudentCreateC(CreateAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+class StudentRetriveC(RetrieveAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+class StudentUpdateC(UpdateAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+class StudentDestroyC(DestroyAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+
+#####################################################################################################
+
+
+
+
+

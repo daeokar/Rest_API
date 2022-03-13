@@ -46,8 +46,17 @@ urlpatterns = [
 
 
     #----common mixin
-    path('student_list_create/', StudListCreate.as_view()),
-    path('student_retrive_update_destroy/<int:pk>/', StudRetriveUpdateDestroy.as_view()),
+    # path('student_list_create/', StudListCreate.as_view()),
+    # path('student_retrive_update_destroy/<int:pk>/', StudRetriveUpdateDestroy.as_view()),
+
+    # ---concreate APIVews----
+    path('student_list_c/', StudentListC.as_view()),
+    path('student_create_c/', StudentCreateC.as_view()),
+    path('student_Retrive_c/<int:pk>/', StudentRetriveC.as_view()),
+    path('student_update_c/<int:pk>/', StudentUpdateC.as_view()),
+    path('student_destroy_c/<int:pk>/', StudentDestroyC.as_view()),
+
+
 
 
 ]
