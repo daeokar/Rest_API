@@ -18,3 +18,16 @@ class Student(models.Model):
         db_table = "stud"
 
 
+class Collage(models.Model):
+    name = models.CharField(max_length=100)
+    staff_count = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = "colg"
+
+
+
+

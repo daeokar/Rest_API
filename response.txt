@@ -1,0 +1,72 @@
+[
+  {
+    "id": 8,
+    "name": "BBB",
+    "age": 46,
+    "city": "bcdc",
+    "marks": 94
+  },
+  {
+    "id": 9,
+    "name": "GGGG",
+    "age": 23,
+    "city": "Pune",
+    "marks": 85
+  },
+  {
+    "id": 10,
+    "name": "gggg",
+    "age": 23,
+    "city": "Pune",
+    "marks": 85
+  },
+  {
+    "id": 12,
+    "name": "AAAAAAA",
+    "age": 25,
+    "city": "Amravati",
+    "marks": 57
+  },
+  {
+    "id": 17,
+    "name": "XXXX",
+    "age": 22,
+    "city": "pune",
+    "marks": 85
+  },
+  {
+    "id": 18,
+    "name": "Aniket",
+    "age": 22,
+    "city": "pune",
+    "marks": 85
+  },
+  {
+    "id": 19,
+    "name": "WWWW",
+    "age": 22,
+    "city": "pune",
+    "marks": 85
+  },
+  {
+    "id": 22,
+    "name": "mayur",
+    "age": 27,
+    "city": "arvi",
+    "marks": 95
+  },
+  {
+    "id": 25,
+    "name": "adchewfb",
+    "age": 56,
+    "city": "vniew",
+    "marks": 55
+  },
+  {
+    "id": 26,
+    "name": "adchewfb",
+    "age": 56,
+    "city": "vniew",
+    "marks": 55
+  }
+]

@@ -3,7 +3,7 @@ from rest_app.models import *
 
 # Register your models here.
 
-admin.site.register(Student)
+admin.site.register([Student, Collage])
 
 
 # >>> from rest_app.models import *

@@ -16,12 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_app.views import * 
+from django.urls import re_path
+from rest_app.urls import *
+
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Student Operation API')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('single_stud/<int:pk>/', single_stud),
-    path('all_stud/', all_stud),
-    path('create_data/', create_data),
+    # path('single_stud/<int:pk>/', single_stud),
+    # path('all_stud/', all_stud),
+    # path('create_data/', create_data),
 
     #----single api for all method
     # path('student_api/', student_api),
@@ -60,6 +67,9 @@ urlpatterns = [
     # path('student_list_create_c/', StudListCreateView.as_view()),
     # path('student_retrive_update_destry_c/<int:pk>/', StudRetrieveUpdateDestroyView.as_view()),
 
-
+    #---ViewSet---
+    path('stud/', include(router.urls)),
+    re_path(r'^$', schema_view),
+    re_path(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),  # login url, logout url
 
 ]

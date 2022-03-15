@@ -536,6 +536,115 @@ class StudRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):              
 #######################################################################################################
 
 
+#----  Viewsets ---
+# - repeated logic can be combined in one code base
+# - url routers --- to generate urls automatically, u dont need to define urls explicitely
+# no handler methods -- get(), post(), put(), patch(), delete()
+# - provides - list(), retrieve(), update(), partial_update(),destroy(), create()
+
+from rest_framework.viewsets import ViewSet
+
+class StudentViewset(ViewSet):
+    def list(self, request):
+        studs = Student.objects.all()
+        ser = StudentSerializer(studs, many=True)
+        return Response(ser.data)
+
+    def create(self, request):
+        data = request.data
+        ser = StudentSerializer(data=data)
+        if ser.is_valid():
+            ser.save()
+            return Response(ser.data, status=status.HTTP_201_CREATED)
+        return Response(ser.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def retrieve(self, request, pk):
+        sid = pk
+        if sid:
+            stud = Student.objects.get(id=sid)
+            ser = StudentSerializer(stud)
+            return Response(ser.data, status=status.HTTP_200_OK)
+
+    def update(self, request, pk):
+        sid = pk 
+        if sid:
+            stud = Student.objects.get(id=sid)
+            ser = StudentSerializer(instance=stud, data=request.data)
+            if ser.is_valid():
+                ser.save()
+                return Response(ser.data, status=status.HTTP_201_CREATED)
+            return Response(ser.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def partial_update(self, request, pk):
+        sid = pk 
+        if sid:
+            stud = Student.objects.get(id=sid)
+            ser = StudentSerializer(instance=stud, data=request.data, partial=True)
+            if ser.is_valid():
+                ser.save()
+                return Response(ser.data, status=status.HTTP_201_CREATED)
+            return Response(ser.data, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def destroy(self, request, pk):
+        sid = pk 
+        if sid:
+            stud = Student.objects.get(id=sid)
+            stud.delete()
+            return Response({"msg" : "Data deleted successfully....!"}, status=status.HTTP_204_NO_CONTENT)
+
+#################################################################################################################
+
+from rest_framework.viewsets import ModelViewSet , ReadOnlyModelViewSet
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+
+# AllowAny   -- get all permission irrespective if user authentication
+# IsAuthenticated  -- permits to only authenticated user -- no matter which user ur using -- in point of is_
+# IsAdminUser -- user which has is_staff enabled, only that user has all access
+
+
+class StudentModelViewset(ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    authentication_classes = [BasicAuthentication]
+    # permission_classes = [AllowAny]         #----------by default -- permission -- AlloWAny
+    permission_classes = [IsAuthenticated] 
+    # permission_classes = [IsAdminUser]
+
+
+
+#-----by using the  ReadOnlyModelViewSet
+
+class StudentReadOnlyModelViewset(ReadOnlyModelViewSet):     #-----we ca only read the data
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+
+
+class CollageModelViewset(ModelViewSet):
+    queryset = Collage.objects.all()
+    serializer_class = CollageSerializar
+    # authentication_classes = [SessionAuthentication]
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    # permission_classes = [AllowAny]
+
+
+
+
+# testing
+
+# - postman
+# - request_client.py
+# - api roots - drf
+# - curl
+# - httpie
+
+# - django rest swagger  --- testing, api documentation
+
 
 
 

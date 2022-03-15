@@ -80,3 +80,24 @@ class StudentSerializer(serializers.ModelSerializer):
     #         return value
     #     raise serializers.ValidationError("Age less than 21 is not allowed...!")
 
+
+#------model serializer for collage
+
+class CollageSerializar(serializers.ModelSerializer):
+
+    class Meta:
+
+        model = Collage
+        fields = "__all__"
+
+
+
+
+
+
+
+
+
+
+
+
