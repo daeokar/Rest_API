@@ -2,14 +2,14 @@
 from rest_framework.routers import DefaultRouter, SimpleRouter
 from rest_app.views import *
 
-router = SimpleRouter()
+router = DefaultRouter()
 
 # router.register(r'studen-op', StudentViewset, basename='student')  # ----urls -- CRUD  -- 
 router.register(r'studen-op', StudentModelViewset, basename='student')
 # router.register(r'studen-op', StudentReadOnlyModelViewset, basename='student')   #----we can only read tha data 
 
 #----collage urls
-router.register(r'collage-op', CollageModelViewset, basename='collage')
+# router.register(r'collage-op', CollageModelViewset, basename='collage')
 
 
 # for i in router.urls:

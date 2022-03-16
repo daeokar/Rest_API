@@ -589,7 +589,7 @@ class StudentViewset(ViewSet):
 
 
     def destroy(self, request, pk):
-        sid = pk 
+        sid = pk
         if sid:
             stud = Student.objects.get(id=sid)
             stud.delete()
@@ -598,8 +598,9 @@ class StudentViewset(ViewSet):
 #################################################################################################################
 
 from rest_framework.viewsets import ModelViewSet , ReadOnlyModelViewSet
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.decorators import action
 
 # AllowAny   -- get all permission irrespective if user authentication
 # IsAuthenticated  -- permits to only authenticated user -- no matter which user ur using -- in point of is_
@@ -607,13 +608,58 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 
 
 class StudentModelViewset(ModelViewSet):
-    queryset = Student.objects.all()
+    # queryset = Student.objects.all().filter(is_deleted=0)    #---fetach on li active data 
+    queryset = Student.objects.all()                         #-----to fetach all data
     serializer_class = StudentSerializer
-    authentication_classes = [BasicAuthentication]
+    # authentication_classes = [BasicAuthentication]
     # permission_classes = [AllowAny]         #----------by default -- permission -- AlloWAny
-    permission_classes = [IsAuthenticated] 
+    # permission_classes = [IsAuthenticated] 
     # permission_classes = [IsAdminUser]
+    # permission_classes = [IsAuthenticatedOrReadOnly]   #-----only read the data
+    # lookup_field = "name"
+    # lookup_url_kwarg =
 
+    #-----tokan athontication ---
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
+"""
+    #----ovearriding----- 
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset()).filter(is_deleted=0)      #-----queryset = Student.objects.all().filter(is_deleted=0)
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):         #--over riden method
+        instance = self.get_object()
+        # print(instance)
+        instance.is_deleted = 1
+        instance.save() 
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    # ---- new url defined   #----   @list_route --substittude (also use to generete the url ..)
+    @action(methods=['get'], detail=False, url_path='get-deleted-data', url_name='get-deleted-data')            #----queryset = Student.objects.all().filter(is_deleted=1)
+    def get_deleted_records(self, request):
+
+        queryset = self.filter_queryset(self.get_queryset()).filter(is_deleted=1)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+"""
 
 
 #-----by using the  ReadOnlyModelViewSet
@@ -628,10 +674,36 @@ class CollageModelViewset(ModelViewSet):
     queryset = Collage.objects.all()
     serializer_class = CollageSerializar
     # authentication_classes = [SessionAuthentication]
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
     # permission_classes = [AllowAny]
 
+from django.contrib.auth import authenticate
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.status import (
+    HTTP_400_BAD_REQUEST,
+    HTTP_404_NOT_FOUND,
+    HTTP_200_OK
+)
+from rest_framework.response import Response
+
+
+@csrf_exempt
+@api_view(["POST"])
+@permission_classes((AllowAny,))
+def login_token(request):
+    username = request.data.get("username")
+    password = request.data.get("password")
+    if username is None or password is None:
+        return Response({'error': 'Please provide both username and password'}, status=HTTP_400_BAD_REQUEST)
+    user = authenticate(username=username, password=password)
+    if not user:
+        return Response({'error': 'Invalid Credentials'}, status=HTTP_404_NOT_FOUND)
+    token, _ = Token.objects.get_or_create(user=user)
+    return Response({'token': token.key, "email":user.email, "first_name": user.first_name},status=HTTP_200_OK)
 
 
 
@@ -646,9 +718,22 @@ class CollageModelViewset(ModelViewSet):
 # - django rest swagger  --- testing, api documentation
 
 
+class HelloView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        content = {'message': 'Hello, World!'}
+        return Response(content)
 
 
+class StudentListFilter(ListAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
 
+    def get_queryset(self):
+
+        user = self.request.user              #----the user which login
+        return Student.objects.filter()
 
 
 

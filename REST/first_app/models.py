@@ -9,7 +9,7 @@ class Student(models.Model):
     city = models.CharField(max_length=100)
     marks = models.IntegerField()
     is_deleted = models.SmallIntegerField(default=0)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    # created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name

@@ -14,12 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from rest_app.views import * 
-from django.urls import re_path
+from django.urls import include, path, re_path
 from rest_app.urls import *
-
+from rest_app.views import *
+from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_swagger.views import get_swagger_view
+from rest_app.views import login_token
+from rest_framework_simplejwt import views as jwt_views
 
 schema_view = get_swagger_view(title='Student Operation API')
 
@@ -68,8 +69,17 @@ urlpatterns = [
     # path('student_retrive_update_destry_c/<int:pk>/', StudRetrieveUpdateDestroyView.as_view()),
 
     #---ViewSet---
-    path('stud/', include(router.urls)),
-    re_path(r'^$', schema_view),
-    re_path(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),  # login url, logout url
+    # path('stud/', include(router.urls)),
+    # re_path(r'^$', schema_view),
+    # re_path(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),  # login url, logout url
+
+    #---tokens---
+    # path('api-token/', obtain_auth_token, name='api_token_auth'),
+    # path('login-token/', login_token, name='api_token_auth1'),
+
+    #---json web token---
+    # path('hello/', HelloView.as_view(), name='hello'),
+    # path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 
 ]
