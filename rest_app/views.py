@@ -725,15 +725,58 @@ class HelloView(APIView):
         content = {'message': 'Hello, World!'}
         return Response(content)
 
+############################################################################################################################
+
+#-----filtering 
+#----search filter --
+
+from django_filters.rest_framework import DjangoFilterBackend                    #------it is support the high customizable fileds filtering for rest fream work
+from rest_framework.filters import SearchFilter                                  #-----only appplide if the view has a search_fields
 
 class StudentListFilter(ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    # authentication_classes = (BasicAuthentication,)                            #----to authenticated person log in
+    # permission_classes = (IsAuthenticated,)                            
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['id', 'name']
+    search_fields = ['name', 'id']
 
-    def get_queryset(self):
 
-        user = self.request.user              #----the user which login
-        return Student.objects.filter()
+    # def get_queryset(self):
+        # return Student.objects.filter(city="arvi")                              #----to filter the data and get
+
+        # user = self.request.user              #----the user which login
+        # # return Student.objects.filter(created_by__username=user)
+        # return Student.objects.filter(created_by=user)
+
+        # queryset = Student.objects.all()
+        # username = self.request.query_params.get("username")                       #-----?username=name of user
+        # if username is not None:
+        #     queryset = queryset.filter(created_by__username=username)
+        # return queryset
+
+
+#------  Ordering Filter -------
+
+from rest_framework.filters import OrderingFilter                                 #-----only appplide if the view has a ordering_fields
+
+
+class StudListOrderingFilter(ListAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    filter_backends = [OrderingFilter]                                            #-------http://127.0.0.1:8000/stud_order_filter/?ordering=name
+    # ordering_fields = ["name", "email"]                                          #------ required for the Orderongfilter
+    # ordering_fields = '__all__'                                                    #----to all the fields in the model
+    # ordering = ['name']
+
+
+
+
+
+
+
+
 
 
 

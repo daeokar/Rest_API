@@ -82,4 +82,10 @@ urlpatterns = [
     # path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 
+    #----stud filter---- search_filter
+    path('stud_filter/', StudentListFilter.as_view()),
+
+    #----Ordering Filter ----
+    path('stud_order_filter/', StudListOrderingFilter.as_view()),
+
 ]
