@@ -91,6 +91,20 @@ class CollageSerializar(serializers.ModelSerializer):
         fields = "__all__"
 
 
+#------serializer for the album and track
+
+from rest_framework.serializers import ModelSerializer
+
+class AlbumModelSerializer(ModelSerializer):
+    class Meta:
+        model = Album
+        fields = "__all__"
+
+
+class AlbumModelSerializer(ModelSerializer):
+    class Meta:
+        model = Album
+        fields = "__all__"
 
 
 
