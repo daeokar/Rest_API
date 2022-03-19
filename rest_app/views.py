@@ -29,6 +29,7 @@ def all_stud(request):
 import io
 
 
+
 def common_lines(request):
     bytes_data = request.body
     streamed_data = io.BytesIO(bytes_data)  #----json data
@@ -769,6 +770,35 @@ class StudListOrderingFilter(ListAPIView):
     # ordering_fields = ["name", "email"]                                          #------ required for the Orderongfilter
     # ordering_fields = '__all__'                                                    #----to all the fields in the model
     # ordering = ['name']
+
+
+
+
+########################################################################################################
+
+
+#---- Pagination -----
+
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+
+class StudlistPageNumberPagination(PageNumberPagination):
+    page_size = 2
+    page_size_query_param = "page"
+    max_page_size = 3                                       #---- decler the maximun size not pass these range page_size always less than or equal to tha max_page size
+
+class StudLimitOffsetPagination(LimitOffsetPagination):
+    page_size = 2
+    page_size_query_param = "page"
+    max_page_size = 3 
+
+
+class StudlistPaginationRecord(ListAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    # pagination_class = StudlistPagination
+    pagination_class = StudLimitOffsetPagination     #-------http://127.0.0.1:8000/stud_list_paginations/?limit=10&offset=5   #--- limit = no. of record in single page , offset = start from
+
+
 
 
 

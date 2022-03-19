@@ -69,7 +69,7 @@ urlpatterns = [
     # path('student_retrive_update_destry_c/<int:pk>/', StudRetrieveUpdateDestroyView.as_view()),
 
     #---ViewSet---
-    # path('stud/', include(router.urls)),
+    path('', include(router.urls)),
     # re_path(r'^$', schema_view),
     # re_path(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),  # login url, logout url
 
@@ -83,9 +83,13 @@ urlpatterns = [
     # path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 
     #----stud filter---- search_filter
-    path('stud_filter/', StudentListFilter.as_view()),
+    # path('stud_filter/', StudentListFilter.as_view()),
 
     #----Ordering Filter ----
-    path('stud_order_filter/', StudListOrderingFilter.as_view()),
+    # path('stud_order_filter/', StudListOrderingFilter.as_view()),
+
+    #--- Paginations url ---
+    path('stud_list_paginations/', StudlistPaginationRecord.as_view()),
+
 
 ]
